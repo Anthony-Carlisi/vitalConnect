@@ -7,8 +7,9 @@ import {
   Image,
   TextInput,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {FontAwesomeIcon, Icons} from '@fortawesome/react-native-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
@@ -17,12 +18,245 @@ import {
   faPhone,
   faCircleArrowUp,
   faChevronDown,
-  faCircleExclamation,
+  faExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 
 function SmsChatWindow() {
   const [text, onChangeText] = useState('Useless Text');
 
+  const [navDropDown, setNavDropDown] = useState(false);
+
+  const onPress = () => {
+    navDropDown === false ? setNavDropDown(true) : setNavDropDown(false);
+  };
+
+  const testObject = [
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Please take a picture of what will need repair',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMae85e9db3c4dff5b496644241365e74f',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+15163034649',
+      To: '+18087935161',
+      Body: 'Yeah',
+      Status: 'received',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMfb98b6f06ea6db04af5bdd980299944c',
+      Direction: 'inbound',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: "I didn't get that. What did you say?",
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:48Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMd3294f06f55b3df35c199fefb9cee110',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Please take a picture of what will need repair',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMae85e9db3c4dff5b496644241365e74f',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+15163034649',
+      To: '+18087935161',
+      Body: 'Yeah',
+      Status: 'received',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMfb98b6f06ea6db04af5bdd980299944c',
+      Direction: 'inbound',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: "I didn't get that. What did you say?",
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:48Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMd3294f06f55b3df35c199fefb9cee110',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Please take a picture of what will need repair',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMae85e9db3c4dff5b496644241365e74f',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: 'Okay lets get you an estimate',
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SM4ef1a842e4558008664cb32919883d46',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+15163034649',
+      To: '+18087935161',
+      Body: 'Yeah',
+      Status: 'received',
+      SentDate: '2021-09-21T13:36:52Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMfb98b6f06ea6db04af5bdd980299944c',
+      Direction: 'inbound',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+    {
+      From: '+18087935161',
+      To: '+15163034649',
+      Body: "I didn't get that. What did you say?",
+      Status: 'delivered',
+      SentDate: '2021-09-21T13:36:48Z',
+      ApiVersion: '2010-04-01',
+      NumSegments: 1,
+      ErrorCode: 0,
+      AccountSid: 'ACe6cc1e9fb822e03ff4593f00b4301639',
+      Sid: 'SMd3294f06f55b3df35c199fefb9cee110',
+      Direction: 'outbound-reply',
+      Price: -0.0075,
+      PriceUnit: 'USD',
+    },
+  ];
   const imageArray = [
     'https://picsum.photos/10',
     // 'https://picsum.photos/20',
@@ -34,8 +268,12 @@ function SmsChatWindow() {
     <View style={styles.window}>
       <View style={styles.header}>
         <View style={styles.headerLeftNav}>
-          <FontAwesomeIcon style={styles.faChevronLeft} icon={faChevronLeft} />
-          <Text style={styles.notificationCircle}>21</Text>
+          <FontAwesomeIcon
+            style={styles.faChevronLeft}
+            size={24}
+            icon={faChevronLeft}
+          />
+          <Text style={styles.notificationCircle}>6</Text>
         </View>
         <View style={styles.center}>
           <View style={styles.avatarContainer}>
@@ -55,11 +293,20 @@ function SmsChatWindow() {
               );
             })}
           </View>
-          <View style={styles.rowCenter}>
-            <Text style={styles.titleText}>Center</Text>
-            <FontAwesomeIcon icon={faChevronRight} />
-          </View>
-          <View style={[styles.headerNavHiddenBar, styles.displayNone]}>
+          <TouchableWithoutFeedback onPress={onPress}>
+            <View style={styles.rowCenter}>
+              <Text style={styles.titleText}>Vincenzo</Text>
+              <FontAwesomeIcon
+                icon={navDropDown === true ? faChevronDown : faChevronRight}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+
+          <View
+            style={[
+              styles.headerNavHiddenBar,
+              navDropDown === true ? '' : styles.displayNone,
+            ]}>
             <View style={styles.center}>
               <FontAwesomeIcon icon={faPhone} />
               <Text>call</Text>
@@ -77,18 +324,20 @@ function SmsChatWindow() {
       </View>
       <ScrollView style={styles.textWindow}>
         <View style={styles.lastText}>
-          <Text style={[styles.textTitle, styles.group]}>Anthony Carlisi</Text>
-          <View style={styles.recipientTextSection}>
+          <Text style={[styles.textTitle, styles.group]}>Vincenzo</Text>
+          <View style={[styles.recipientTextSection]}>
             <Image
               style={styles.textAvatar}
               source={{
                 uri: 'https://picsum.photos/90',
               }}
             />
-            <View style={styles.recipientTextContainer}>
+            <View style={[styles.recipientTextContainer]}>
               <View style={styles.leftArrow}></View>
               <View style={styles.leftArrowOverlap}></View>
-              <Text style={[styles.text, styles.recipientText]}>lorem50</Text>
+              <Text style={[styles.text, styles.recipientText]}>
+                Nice great news
+              </Text>
             </View>
           </View>
           <Text style={[styles.textTitle, styles.group]}>
@@ -98,14 +347,22 @@ function SmsChatWindow() {
 
         <View style={styles.lastText}>
           <View style={styles.senderTextSection}>
-            <FontAwesomeIcon
-              style={styles.textError}
-              icon={faCircleExclamation}
-            />
+            <View style={styles.center}>
+              <View style={styles.textErrorCircle}>
+                <FontAwesomeIcon
+                  style={styles.textError}
+                  icon={faExclamation}
+                />
+              </View>
+            </View>
             <View style={styles.senderTextContainer}>
               <View style={styles.rightArrow}></View>
               <View style={styles.rightArrowOverlap}></View>
-              <Text style={[styles.text, styles.senderText]}>Lorem50</Text>
+              <Text style={[styles.text, styles.senderText]}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
+                doloribus rerum repellendus similique repudiandae harum fugit
+                ullam dolore aliquam voluptatem?
+              </Text>
             </View>
           </View>
           <Text style={[styles.textTitle, styles.end]}>Received 10:37 AM</Text>
@@ -124,17 +381,6 @@ const styles = StyleSheet.create({
   window: {
     height: '100%',
   },
-  textWindow: {paddingHorizontal: 15},
-  notificationCircle: {
-    borderRadius: 50,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    backgroundColor: '#248bf5',
-    color: '#f9f9f9',
-    position: 'absolute',
-    left: 0,
-    marginLeft: 15,
-  },
   header: {
     // height: 50,
     flexDirection: 'row',
@@ -144,6 +390,32 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.001,
     borderBottomColor: '#7a7a78',
   },
+  headerLeftNav: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    top: 30,
+  },
+  faChevronLeft: {
+    position: 'absolute',
+    left: 0,
+    color: '#248bf5',
+    fontSize: 20,
+  },
+  textWindow: {
+    paddingHorizontal: 15,
+  },
+  notificationCircle: {
+    borderRadius: 50,
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    backgroundColor: '#248bf5',
+    color: '#f9f9f9',
+    position: 'absolute',
+    left: 18,
+  },
+
   headerAvatar: {
     width: 50,
     height: 50,
@@ -166,6 +438,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   recipientTextContainer: {
+    flex: 1,
     flexDirection: 'row',
   },
   headerNavHiddenBar: {
@@ -178,13 +451,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerLeftNav: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    top: 30,
-  },
+
   displayNone: {display: 'none'},
   input: {
     bottom: 0,
@@ -194,8 +461,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     borderRadius: 15,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     flexWrap: 'wrap',
   },
   recipientText: {
@@ -251,19 +518,27 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
     borderBottomLeftRadius: 20,
   },
-  faChevronLeft: {
-    position: 'absolute',
-    left: 0,
-  },
+
   lastText: {
     marginBottom: 20,
   },
   textError: {
+    color: 'red',
+  },
+  textErrorCircle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    padding: 1,
+    borderWidth: 2,
+    borderColor: 'red',
     marginLeft: 5,
-    alignSelf: 'center',
+    // position: 'absolute',
   },
   textTitle: {
     paddingHorizontal: 8,
+    color: '#8c8c8c',
+    fontSize: 12,
   },
   group: {
     marginLeft: 30,
@@ -284,6 +559,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignSelf: 'flex-end',
     maxWidth: '75%',
+  },
+  titleText: {
+    fontSize: 12,
   },
 });
 export default SmsChatWindow;
