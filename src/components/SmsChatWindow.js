@@ -21,10 +21,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 function SmsChatWindow() {
-  let margin1 = -20;
-
-  const [text, onChangeText] = React.useState('Useless Text');
-  const [number, onChangeNumber] = React.useState(null);
+  const [text, onChangeText] = useState('Useless Text');
 
   const imageArray = [
     'https://picsum.photos/10',
