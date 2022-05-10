@@ -4,6 +4,7 @@
   "private": true,
   "description": "React Native for Web starter template",
   "keywords": [],
+  "proxy": "http://192.168.1.215:5000",
   "main": "src/index.js",
   "scripts": {
     "android": "react-native run-android",
@@ -11,7 +12,9 @@
     "start": "react-native start",
     "web": "react-scripts start",
     "test": "jest",
-    "lint": "eslint ."
+    "server": "json-server --watch db.json -p 5000 --host 192.168.1.215",
+    "lint": "eslint .",
+    "dev": "concurrently \"npm run android\" \"npm run web\" \"npm run server\""
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
@@ -20,6 +23,7 @@
     "@fortawesome/react-native-fontawesome": "^0.2.7",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "json-server": "^0.17.0",
     "moment": "^2.29.3",
     "react": "17.0.2",
     "react-dom": "^17.0.0",
