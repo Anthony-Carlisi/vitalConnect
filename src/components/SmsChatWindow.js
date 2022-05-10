@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
+import SmsChatList from './SmsChatList';
 import {
   View,
   Text,
@@ -36,7 +37,7 @@ function SmsChatWindow() {
   // Fetch smsData
   const fetchSmsData = async () => {
     const response = await fetch(
-      'http://192.168.1.215:5000/smsData?_sort=SentDate&_order=desc',
+      'http://192.168.86.44:5000/smsData?_sort=SentDate&_order=desc',
     );
     const data = await response.json();
     setSmsData(data);
@@ -119,7 +120,7 @@ function SmsChatWindow() {
         </View>
       </View>
       <FlatList
-        style={[styles.textWindow, {position: 'absolute', width: '100%'}]}
+        style={[styles.textWindow]}
         data={smsData}
         scrollEnabled={true}
         renderItem={({item, index}) => {
@@ -228,7 +229,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(249,249,249, 0.9)',
     borderBottomWidth: 0.001,
     borderBottomColor: '#7a7a78',
-    // position: 'absolute',
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1,
+    elevation: 1,
   },
   headerLeftNav: {
     alignItems: 'center',

@@ -4,7 +4,7 @@
   "private": true,
   "description": "React Native for Web starter template",
   "keywords": [],
-  "proxy": "http://192.168.1.215:5000",
+  "proxy": "http://192.168.86.44:5000",
   "main": "src/index.js",
   "scripts": {
     "android": "react-native run-android",
@@ -12,7 +12,7 @@
     "start": "react-native start",
     "web": "react-scripts start",
     "test": "jest",
-    "server": "json-server --watch db.json -p 5000 --host 192.168.1.215",
+    "server": "json-server --watch db.json -p 5000 --host 192.168.86.44",
     "lint": "eslint .",
     "dev": "concurrently \"npm run android\" \"npm run web\" \"npm run server\""
   },
