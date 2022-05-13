@@ -4,6 +4,7 @@ import SmsChatWindow from './components/SmsChatWindow';
 
 import {View, Text, Button} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SmsChatHeader from './components/SmsChatHeader';
 
 function HomeScreen({navigation}) {
   return (
@@ -34,9 +35,20 @@ function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Overview'}}
+          options={{
+            headerTitle: () => <Button title="Info" color="black" />,
+            headerTitleAlign: 'center',
+            headerRight: () => <Button title="Info" color="black" />,
+          }}
         />
-        <Stack.Screen name="Details" component={SmsChatWindow} />
+        <Stack.Screen
+          name="Details"
+          component={SmsChatWindow}
+          options={{
+            headerTitle: () => <SmsChatHeader />,
+            headerTitleAlign: 'center',
+          }}
+        />
       </Stack.Navigator>
 
       {/* <SmsChatWindow /> */}

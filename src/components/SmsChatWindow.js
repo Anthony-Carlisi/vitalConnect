@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
-import SmsChatList from './SmsChatList';
 import {
   View,
   Text,
@@ -9,22 +8,11 @@ import {
   TextInput,
   FlatList,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faChevronLeft,
-  faChevronRight,
-  faInfo,
-  faUser,
-  faPhone,
-  // faCircleArrowUp,
-  faChevronDown,
-  // faExclamation,
-} from '@fortawesome/free-solid-svg-icons';
 
 function SmsChatWindow() {
   const [text, onChangeText] = useState('Useless Text');
-  const [navDropDown, setNavDropDown] = useState(false);
   const [textFooter, setTextFooter] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -37,15 +25,16 @@ function SmsChatWindow() {
   // Fetch smsData
   const fetchSmsData = async () => {
     const response = await fetch(
-      'http://192.168.86.44:5000/smsData?_sort=SentDate&_order=desc',
+      'http://192.168.1.215:5000/smsData?_sort=SentDate&_order=asc',
     );
     const data = await response.json();
+    const recipientTexts = data.filter(sms => sms.Direction === 'inbound');
+    const lastRecipientText = recipientTexts[recipientTexts.length - 1];
+    const senderTexts = data.filter(sms => sms.Direction !== 'inbound');
+    const lastSenderText = senderTexts[senderTexts.length - 1];
+    setTextFooter([lastRecipientText.Sid, lastSenderText.Sid]);
     setSmsData(data);
     setIsLoading(false);
-  };
-
-  const onPress = () => {
-    navDropDown === false ? setNavDropDown(true) : setNavDropDown(false);
   };
 
   const testFooter = id => {
@@ -54,71 +43,8 @@ function SmsChatWindow() {
       : setTextFooter(prevState => [...prevState, id]);
   };
 
-  const imageArray = [
-    'https://picsum.photos/10',
-    'https://picsum.photos/20',
-    'https://picsum.photos/30',
-    'https://picsum.photos/40',
-  ];
-
   return (
-    <View style={styles.window}>
-      <View style={styles.header}>
-        <View style={styles.headerLeftNav}>
-          <FontAwesomeIcon
-            style={styles.faChevronLeft}
-            size={24}
-            icon={faChevronLeft}
-          />
-          <Text style={styles.notificationCircle}>6</Text>
-        </View>
-        <View style={styles.center}>
-          <View style={styles.avatarContainer}>
-            {imageArray.map((image, index) => {
-              return (
-                <Image
-                  key={index}
-                  style={
-                    index !== 0
-                      ? [styles.headerAvatar, {marginRight: -20}]
-                      : [styles.headerAvatar]
-                  }
-                  source={{
-                    uri: image,
-                  }}
-                />
-              );
-            })}
-          </View>
-          <TouchableWithoutFeedback style={styles.rowCenter} onPress={onPress}>
-            <Text style={styles.titleText}>
-              The Family
-              <FontAwesomeIcon
-                size={8}
-                icon={navDropDown === true ? faChevronDown : faChevronRight}
-              />
-            </Text>
-          </TouchableWithoutFeedback>
-          <View
-            style={[
-              styles.headerNavHiddenBar,
-              navDropDown === true ? '' : styles.displayNone,
-            ]}>
-            <View style={styles.center}>
-              <FontAwesomeIcon icon={faPhone} />
-              <Text>call</Text>
-            </View>
-            <View style={styles.center}>
-              <FontAwesomeIcon icon={faUser} />
-              <Text>profile</Text>
-            </View>
-            <View style={styles.center}>
-              <FontAwesomeIcon icon={faInfo} />
-              <Text>info</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+    <SafeAreaView style={styles.window}>
       <FlatList
         style={[styles.textWindow]}
         data={smsData}
@@ -132,7 +58,6 @@ function SmsChatWindow() {
                   smsData[index + 1].From !== item.From
                     ? styles.lastText
                     : styles.marginText,
-                  styles.marginText,
                 ]}>
                 {/* <Text style={[styles.textTitle, styles.group]}>Vincenzo</Text> */}
                 <View
@@ -178,31 +103,16 @@ function SmsChatWindow() {
                     </Text>
                   </View>
                 </View>
-
-                {(index + 1 < smsData.length &&
-                  smsData[index + 1].From !== item.From) ||
-                smsData.length - 1 === index ? (
-                  <Text
-                    style={[
-                      styles.textTitle,
-                      item.Direction === 'inbound' ? '' : styles.end,
-                    ]}>
-                    {`${
-                      item.Status.charAt(0).toUpperCase() + item.Status.slice(1)
-                    } ${moment(item.SentDate).format('h:mm A')}`}
-                  </Text>
-                ) : (
-                  <Text
-                    style={[
-                      styles.textTitle,
-                      item.Direction === 'inbound' ? '' : styles.end,
-                      textFooter.includes(item.Sid) ? '' : styles.displayNone,
-                    ]}>
-                    {`${
-                      item.Status.charAt(0).toUpperCase() + item.Status.slice(1)
-                    } ${moment(item.SentDate).format('h:mm A')}`}
-                  </Text>
-                )}
+                <Text
+                  style={[
+                    styles.textTitle,
+                    item.Direction === 'inbound' ? '' : styles.end,
+                    textFooter.includes(item.Sid) ? '' : styles.displayNone,
+                  ]}>
+                  {`${
+                    item.Status.charAt(0).toUpperCase() + item.Status.slice(1)
+                  } ${moment(item.SentDate).format('h:mm A')}`}
+                </Text>
               </View>
             </TouchableWithoutFeedback>
           );
@@ -215,7 +125,7 @@ function SmsChatWindow() {
         onChangeText={onChangeText}
         value={text}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -223,50 +133,8 @@ const styles = StyleSheet.create({
   window: {
     height: '100%',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(249,249,249, 0.9)',
-    borderBottomWidth: 0.001,
-    borderBottomColor: '#7a7a78',
-    // position: 'absolute',
-    width: '100%',
-    zIndex: 1,
-    elevation: 1,
-  },
-  headerLeftNav: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    top: 30,
-  },
-  faChevronLeft: {
-    position: 'absolute',
-    left: 0,
-    color: '#248bf5',
-    fontSize: 20,
-  },
   textWindow: {
     paddingHorizontal: 15,
-  },
-  notificationCircle: {
-    borderRadius: 50,
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-    backgroundColor: '#248bf5',
-    color: '#f9f9f9',
-    position: 'absolute',
-    left: 18,
-  },
-
-  headerAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    overflow: 'hidden',
-    borderWidth: 3,
-    borderColor: '#f9f9f9',
   },
   textAvatar: {
     width: 25,
@@ -276,27 +144,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginRight: 5,
   },
-  rowCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   recipientTextContainer: {
     flex: 1,
     flexDirection: 'row',
   },
-  headerNavHiddenBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: 160,
+  displayNone: {
+    display: 'none',
   },
-  center: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  displayNone: {display: 'none'},
   input: {
     bottom: 0,
     backgroundColor: 'pink',
@@ -315,11 +169,6 @@ const styles = StyleSheet.create({
   senderText: {
     backgroundColor: '#248bf5',
     color: '#f9f9f9',
-  },
-  avatarContainer: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   leftArrow: {
     alignSelf: 'flex-end',
@@ -357,7 +206,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomLeftRadius: 20,
   },
-
   lastText: {
     marginBottom: 20,
   },
@@ -397,9 +245,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignSelf: 'flex-end',
     maxWidth: '75%',
-  },
-  titleText: {
-    fontSize: 12,
   },
   marginText: {
     marginBottom: 2,
